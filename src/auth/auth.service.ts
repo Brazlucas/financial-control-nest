@@ -27,6 +27,10 @@ export class AuthService {
     return { token };
   }
 
+  async logout() {
+    return { message: 'Logout realizado com sucesso' };
+  }
+
   async validarUsuario(email: string) {
     return this.userService.findByEmail(email);
   }
