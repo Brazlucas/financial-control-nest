@@ -6,16 +6,19 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { CategoryModule } from './category/category.module';
 import { TransactionModule } from './transaction/transaction.module';
-import { PrismaModule } from './prisma/prisma.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
     AuthModule,
-    UserModule,
-    CategoryModule,
-    TransactionModule,
-    PrismaModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: 'db.sqlite',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
+    }),
+    TypeOrmModule.forFeature([UserModule, TransactionModule, CategoryModule]),
   ],
   controllers: [AppController],
   providers: [AppService],
