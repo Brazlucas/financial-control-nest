@@ -27,6 +27,8 @@
 
 ## Project setup
 
+![Node.js](https://img.shields.io/badge/Node.js-20.0.0-green?logo=node.js&logoColor=white)
+
 ```bash
 $ npm install
 ```
