@@ -12,7 +12,10 @@ export class UserService {
   ) {}
 
   async create(data: CreateUserDto): Promise<User> {
-    const user = this.userRepo.create(data);
+    const user = this.userRepo.create({
+      ...data,
+      isAdmin: data.isAdmin ?? false,
+    });
     return this.userRepo.save(user);
   }
 

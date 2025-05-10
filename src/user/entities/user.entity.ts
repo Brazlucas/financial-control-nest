@@ -12,7 +12,8 @@ export class User {
   @Column()
   name: string;
 
-  @Column()
+  @Exclude()
+  @Column({ default: false })
   isAdmin: boolean;
 
   @Column({ unique: true })
