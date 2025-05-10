@@ -7,7 +7,7 @@ import { User } from 'src/user/entities/user.entity';
 @Injectable()
 export class AuthService {
   constructor(
-  private readonly userService: UserService,
+    private readonly userService: UserService,
     private readonly jwtService: JwtService
   ) {}
 
@@ -16,7 +16,13 @@ export class AuthService {
     email: string,
     password: string,
     isAdmin: boolean
-  ): Promise<{ token: string }> {
+  ): Promise<User> {
+    const existingUser = await this.userService.findByEmail(email);
+
+    if (existingUser) {
+      throw new UnauthorizedException('Email já cadastrado');
+    }
+
     const hashed = await bcrypt.hash(password, 10);
     const user = await this.userService.create({
       name,
@@ -24,10 +30,10 @@ export class AuthService {
       password: hashed,
       isAdmin,
     });
-    return this.login(user.email, password);
+    return user;
   }  
 
-  async login(email: string, password: string): Promise<{ token: string }> {
+  async login(email: string, password: string): Promise<{ token: string, user: User }> {
     const user = await this.userService.findByEmail(email);
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new UnauthorizedException('Credenciais inválidas');
@@ -35,7 +41,7 @@ export class AuthService {
 
     const payload = { sub: user.id, email: user.email };
     const token = await this.jwtService.signAsync(payload);
-    return { token };
+    return { token, user };
   }
 
   async logout(): Promise<{ message: string }> {
