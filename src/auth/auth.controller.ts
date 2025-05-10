@@ -10,18 +10,18 @@ export class AuthController {
 
   @Public()
   @Post('register')
-  register(@Body() dto: RegisterDto) {
+  register(@Body() dto: RegisterDto): Promise<{ token: string }> {
     return this.authService.register(dto.name, dto.email, dto.password);
   }
 
   @Public()
   @Post('login')
-  login(@Body() dto: LoginDto) {
+  login(@Body() dto: LoginDto): Promise<{ token: string }> {
     return this.authService.login(dto.email, dto.password);
   }
 
   @Post('logout')
-  logout() {
+  logout(): Promise<{ message: string }> {
     return this.authService.logout();
   }
 }
