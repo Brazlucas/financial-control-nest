@@ -11,12 +11,18 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async register(name: string, email: string, password: string): Promise<{ token: string }> {
+  async register(
+    name: string,
+    email: string,
+    password: string,
+    isAdmin: boolean
+  ): Promise<{ token: string }> {
     const hashed = await bcrypt.hash(password, 10);
     const user = await this.userService.create({
       name,
       email,
       password: hashed,
+      isAdmin,
     });
     return this.login(user.email, password);
   }  

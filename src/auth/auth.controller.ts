@@ -11,7 +11,7 @@ export class AuthController {
   @Public()
   @Post('register')
   register(@Body() dto: RegisterDto): Promise<{ token: string }> {
-    return this.authService.register(dto.name, dto.email, dto.password);
+    return this.authService.register(dto.name, dto.email, dto.password, dto.isAdmin);
   }
 
   @Public()

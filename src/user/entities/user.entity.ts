@@ -12,6 +12,9 @@ export class User {
   @Column()
   name: string;
 
+  @Column()
+  isAdmin: boolean;
+
   @Column({ unique: true })
   email: string;
 
